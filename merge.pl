@@ -85,17 +85,15 @@ sub process_file($) {
                 $save = 0;
             }
         } elsif ($line =~ /(\d) \@(\w+)\@ FAM/i) {
-            if ($1 != 0) {
-                print "FAM NOT FIRST LEVEL\n";
-            }
+            my $level = $1;
             $curind = $2;
             $write = 0;
-            if ($ind->{$curind}) {
+            if ($level == 0 && $ind->{$curind}) {
                 print "skipping FAM $curind\n";
             } else {
                 $ind->{$curind} = 1;
                 $write = 1;
-                $save = 1;
+                $save = ($level == 0);
             }
         } elsif ($line =~ /(\d) \@(\w+)\@ SUBM/i) {
             if ($1 != 0) {
